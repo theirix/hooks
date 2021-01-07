@@ -951,3 +951,14 @@ class ConanCenterTests(ConanClientTestCase):
                                            self.conanfile_base.format(placeholder=''))
         output = self.conan(['export', '.', 'name/version@'])
         self.assertIn("[PRIVATE IMPORTS (KB-H053)] OK", output)
+
+    def test_class_name_disallowed(self):
+        conanfile = textwrap.dedent("""\
+        from conans import ConanFile
+        class LibnameConan(ConanFile):
+            {}
+            pass
+        """)
+        tools.save('conanfile.py', content=conanfile)
+        output = self.conan(['create', '.', 'name/version@user/test'])
+        self.assertIn("ERROR: [CLASS NAME (KB-H054)] Class name LibnameConan is not allowed", output)

@@ -52,6 +52,7 @@ kb_errors = {"KB-H001": "DEPRECATED GLOBAL CPPSTD",
              "KB-H051": "DEFAULT OPTIONS AS DICTIONARY",
              "KB-H052": "CONFIG.YML HAS NEW VERSION",
              "KB-H053": "PRIVATE IMPORTS",
+             "KB-H054": "CLASS NAME",
              }
 
 
@@ -582,6 +583,12 @@ def pre_export(output, conanfile, conanfile_path, reference, **kwargs):
         if os.path.exists(test_package_path):
             test_package_content = tools.load(test_package_path)
             _check_private_imports("test_package/conanfile.py", test_package_content)
+
+    @run_test("KB-H054", output)
+    def test(out):
+        class_name = type(conanfile).__name__
+        if class_name in ("LibnameConan", "ConanRecipe", "ConanFileDefault"):
+            out.error("Class name {} is not allowed".format(class_name))
 
 @raise_if_error_output
 def post_export(output, conanfile, conanfile_path, reference, **kwargs):
