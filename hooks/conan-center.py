@@ -588,7 +588,7 @@ def pre_export(output, conanfile, conanfile_path, reference, **kwargs):
     def test(out):
         class_name = type(conanfile).__name__
         if class_name in ("LibnameConan", "ConanRecipe", "ConanFileDefault"):
-            out.error("Class name '{}' is not allowed. Use 'Conan{}' instead.".format(class_name, conanfile.name))
+            out.error("Class name '{}' is not allowed. For example, use '{}Conan' instead.".format(class_name, conanfile.name))
 
 @raise_if_error_output
 def post_export(output, conanfile, conanfile_path, reference, **kwargs):
